@@ -3,3 +3,6 @@ env/
 py1337x/__pycache__/
 dist/
 1337x.egg-info/
+__pycache__/
+venv/
+\[1337x\]extension.exe
