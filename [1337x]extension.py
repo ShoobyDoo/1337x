@@ -130,4 +130,4 @@ elif args.method == 'info':
 try:
     pprint(result)
 except NameError:
-    print()
+    print("EzTorrentioExtension [1337x.to]: no arguments provided! try using the -h or --help flag for usage info.")
