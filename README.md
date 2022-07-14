@@ -1,5 +1,5 @@
 # EzTorrentioExtension: [1337x.to]
-![visitors](https://visitor-badge.laobi.icu/badge?ShoobyDoo=1337x)
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=shoobydoo.visitor-badge)
 
 Implements [hemantapkh/1337x](https://github.com/hemantapkh/1337x)
 
