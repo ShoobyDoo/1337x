@@ -105,7 +105,7 @@ class py1337x:
     @staticmethod
     def torrentParser(response, baseUrl, page=1):
         soup = BeautifulSoup(response.content, 'html.parser')
-
+        
         torrentList = soup.select('a[href*="/torrent/"]')
         seedersList = soup.select('td.coll-2')
         leechersList = soup.select('td.coll-3')
@@ -133,15 +133,15 @@ class py1337x:
 
         if torrentList:
             for count, torrent in enumerate(torrentList):
-                name = torrent.getText().strip()
-                torrentId = torrent['href'].split('/')[2]
-                link = baseUrl+torrent['href']
-                seeders = seedersList[count].getText()
-                leechers = leechersList[count].getText()
-                size = sizeList[count].contents[0]
-                time = timeList[count].getText()
-                uploader = uploaderList[count].getText().strip()
-                uploaderLink = baseUrl+'/'+uploader+'/'
+                name = torrent.getText().strip().encode('ascii',errors='ignore').decode('ascii')
+                torrentId = torrent['href'].split('/')[2].encode('ascii',errors='ignore').decode('ascii')
+                link = baseUrl+torrent['href'].encode('ascii',errors='ignore').decode('ascii')
+                seeders = seedersList[count].getText().encode('ascii',errors='ignore').decode('ascii')
+                leechers = leechersList[count].getText().encode('ascii',errors='ignore').decode('ascii')
+                size = sizeList[count].contents[0].encode('ascii',errors='ignore').decode('ascii')
+                time = timeList[count].getText().encode('ascii',errors='ignore').decode('ascii')
+                uploader = uploaderList[count].getText().strip().encode('ascii',errors='ignore').decode('ascii')
+                uploaderLink = baseUrl+'/'+uploader+'/'.encode('ascii',errors='ignore').decode('ascii')
 
                 results['items'].append({
                     'name': name,
@@ -162,32 +162,31 @@ class py1337x:
         soup = BeautifulSoup(response.content, 'html.parser')
 
         name = soup.find('div', {'class': 'box-info-heading clearfix'})
-        name = name.text.strip() if name else None
+        name = name.text.strip().encode('ascii',errors='ignore').decode('ascii') if name else 'N/A'
 
         shortName = soup.find('div', {'class': 'torrent-detail-info'})
-        shortName = shortName.find('h3').getText().strip() if shortName else None
+        shortName = shortName.find('h3').getText().strip().encode('ascii',errors='ignore').decode('ascii') if shortName else 'N/A'
 
         description = soup.find('div', {'class': 'torrent-detail-info'})
-        description = description.find(
-            'p').getText().strip() if description else None
+        description = description.find('p').getText().strip().encode('ascii',errors='ignore').decode('ascii') if description else 'N/A'
 
         genre = soup.find('div', {'class': 'torrent-category clearfix'})
-        genre = [i.text.strip() for i in genre.find_all('span')] if genre else None
+        genre = [i.text.strip() for i in genre.find_all('span')] if genre else 'N/A'
 
         thumbnail = soup.find('div', {'class': 'torrent-image'})
-        thumbnail = thumbnail.find('img')['src'] if thumbnail else None
+        thumbnail = thumbnail.find('img')['src'] if thumbnail else ''
 
         if thumbnail and not thumbnail.startswith('http'):
             thumbnail = f'{baseUrl}'+thumbnail
 
         magnetLink = soup.select('a[href^="magnet"]')
-        magnetLink = magnetLink[0]['href'] if magnetLink else None
+        magnetLink = magnetLink[0]['href'] if magnetLink else 'N/A'
 
         infoHash = soup.find('div', {'class': 'infohash-box'})
-        infoHash = infoHash.find('span').getText() if infoHash else None
+        infoHash = infoHash.find('span').getText() if infoHash else 'N/A'
 
         images = soup.find('div', {'class': 'tab-pane active'})
-        images = [i['src'] for i in images.find_all('img')] if images else None
+        images = [i['src'] for i in images.find_all('img')] if images else 'N/A'
 
         descriptionList = soup.find_all('ul', {'class': 'list'})
 
@@ -199,7 +198,7 @@ class py1337x:
             species = firstList[1].find('span').getText()
             language = firstList[2].find('span').getText()
             size = firstList[3].find('span').getText()
-            uploader = firstList[4].find('span').getText().strip()
+            uploader = firstList[4].find('span').getText()
             uploaderLink = baseUrl+'/'+uploader+'/'
 
             downloads = secondList[0].find('span').getText()
@@ -221,8 +220,8 @@ class py1337x:
             'language': language,
             'size': size,
             'thumbnail': thumbnail,
-            'images': images if images else None,
-            'uploader': uploader,
+            'images': images if images else 'N/A',
+            'uploader': uploader.strip(),
             'uploaderLink': uploaderLink,
             'downloads': downloads,
             'lastChecked': lastChecked,
@@ -230,5 +229,5 @@ class py1337x:
             'seeders': seeders,
             'leechers': leechers,
             'magnetLink': magnetLink,
-            'infoHash': infoHash.strip() if infoHash else None
+            'infoHash': infoHash.strip() if infoHash else 'N/A'
         }

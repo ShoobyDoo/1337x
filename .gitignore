@@ -6,3 +6,5 @@ dist/
 __pycache__/
 venv/
 \[1337x\]extension.exe
+
+auto-py-to-exe-build.json

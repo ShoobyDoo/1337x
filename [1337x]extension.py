@@ -37,13 +37,12 @@
 
 import textwrap
 import argparse
-from pprint import pprint
 from i1337x import py1337x
 
 
 __version__ = '1.0.0'
 argparse_parser = argparse.ArgumentParser(
-    formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog,max_help_position=40),
+    formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, max_help_position=40),
     description=textwrap.dedent('''\
         EzTorrentioExtension: [1337x.to]
         --------------------------------
@@ -109,8 +108,14 @@ client = py1337x(args.proxy, args.cookie)
 # itemCount:
 # pageCount:
 
-if args.query:
+if args.method == 'search':
     result = client.search(args.query, args.page, args.category, args.sortby, args.order)
+    # for page in range(int((result['pageCount']))):
+    #     if not page+1 == args.page:
+    #         _results = client.search(args.query, page+1, args.category, args.sortby, args.order)
+    #         result['items'] += _results['items']
+    #         result['itemCount'] = len(result['items'])
+    #         result['pageCount'] = '/'
 
 elif args.method == 'trending':
     result = client.trending(args.category, args.week)
@@ -128,6 +133,6 @@ elif args.method == 'info':
     result = client.info(args.query)
 
 try:
-    pprint(result)
+    print(result)
 except NameError:
     print("EzTorrentioExtension [1337x.to]: no arguments provided! try using the -h or --help flag for usage info.")
