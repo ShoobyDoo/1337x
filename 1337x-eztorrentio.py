@@ -31,7 +31,7 @@
 # HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 # TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 # EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+#
 # Build standalone executable with external libs using PyInstaller
 # pyinstaller --noconfirm --onefile --console --icon "<path-to-codebase>.ico" --clean --paths "C:/path-to-codebase/venv/Lib/site-packages" --add-data "C:/<path-to-codebase>/i1337x.py;."  "C:/<path-to-codebase>/[1337x]extension.py"
 
@@ -66,7 +66,7 @@ argparse_parser.add_argument('-m', '--method', default='search', metavar='<metho
             Options: <(default) search, trending, top, popular, browse, info>\n\n'''))
     
 argparse_parser.add_argument('-c', '--category', default=None, metavar='<category>', 
-    choices=['Anime', 'Apps', 'Documentaries', 'Games', 'Movies', 'Music', 'Other', 'TV', 'XXX'],
+    choices=['None', 'Anime', 'Apps', 'Documentaries', 'Games', 'Movies', 'Music', 'Other', 'TV', 'XXX'],
     help=textwrap.dedent('''\
         Specify the type of action you would like to perform, this MUST be set when method=popular/browse.
             Options: <(default) None, Anime, Apps, Documentaries, Games, Movies, Music, Other, TV, XXX>\n\n'''))
@@ -102,20 +102,9 @@ argparse_parser.add_argument('-C', '--cookie', default=None, metavar='<cookie>',
 args = argparse_parser.parse_args()
 client = py1337x(args.proxy, args.cookie)
 
-# items:
-#     name, torrentId, link, seeders, leechers, size, time, uploader, uploaderLink
-# currentPage:
-# itemCount:
-# pageCount:
-
 if args.method == 'search':
-    result = client.search(args.query, args.page, args.category, args.sortby, args.order)
-    # for page in range(int((result['pageCount']))):
-    #     if not page+1 == args.page:
-    #         _results = client.search(args.query, page+1, args.category, args.sortby, args.order)
-    #         result['items'] += _results['items']
-    #         result['itemCount'] = len(result['items'])
-    #         result['pageCount'] = '/'
+    _category = None if args.category == 'None' else args.category
+    result = client.search(args.query, args.page, _category, args.sortby, args.order)
 
 elif args.method == 'trending':
     result = client.trending(args.category, args.week)
