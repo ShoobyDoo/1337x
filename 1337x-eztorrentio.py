@@ -1,5 +1,5 @@
 # --------------------------------
-# File      : [1337x]extension.py
+# File      : 1337x-eztorrentio.py
 # Author    : Doomlad
 # Date      : 07/11/2022
 # Info      : Parse a search query via torrent site 1337x.to and its different proxies and
@@ -40,7 +40,7 @@ import argparse
 from i1337x import py1337x
 
 
-__version__ = '1.0.0'
+__version__ = '1.1.2'
 argparse_parser = argparse.ArgumentParser(
     formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, max_help_position=40),
     description=textwrap.dedent('''\
